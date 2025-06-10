@@ -113,5 +113,5 @@ class App(ctk.CTk):
         self.configure(menu=self.menu)
 
 
-app = App(darkdetect.theme())
+app = App()
 app.mainloop()
