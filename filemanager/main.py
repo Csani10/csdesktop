@@ -9,6 +9,18 @@ import os
 from pathlib import Path
 import subprocess
 
+def bind_mousewheel(widget):
+    def _on_mousewheel(event):
+        widget._parent_canvas.yview_scroll(-1 * (event.delta // 120), "units")
+
+    # Windows and Mac
+    widget.bind_all("<MouseWheel>", _on_mousewheel)
+
+    # Linux (uses Button-4/5)
+    widget.bind_all("<Button-4>", lambda e: widget._parent_canvas.yview_scroll(-1, "units"))
+    widget.bind_all("<Button-5>", lambda e: widget._parent_canvas.yview_scroll(1, "units"))
+
+
 def svg_to_pil_image(svg_path, size=(22,22)):
 
     png_bytes = cairosvg.svg2png(url=svg_path, output_width=size[0], output_height=size[1])
@@ -109,6 +121,7 @@ class App(ctk.CTk):
 
         self.file_list = ctk.CTkScrollableFrame(self)
         self.file_list.pack(fill="both", expand=True)
+        bind_mousewheel(self.file_list)
     
     def newdir(self):
         dialog = ctk.CTkInputDialog(text="Directory Name: ", title="New Directory")
