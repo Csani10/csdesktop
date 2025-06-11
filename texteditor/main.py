@@ -1,5 +1,6 @@
 import customtkinter as ctk
 import tkinter as tk
+from tkinter import messagebox
 from CTkMenuBar import *
 
 class App(ctk.CTk):
@@ -78,6 +79,9 @@ class App(ctk.CTk):
         self.text_edit.insert("insert", self.clipboard_get())
         return "break"
 
+    def about(self):
+        messagebox.showinfo("About", "CsEdit by Csani10\nhttps://github.com/Csani10")
+
     def setup_widgets(self):
         self.text_edit = ctk.CTkTextbox(self)
         self.text_edit.bind("<Control-Key-a>", command=self.select_all)
@@ -108,7 +112,7 @@ class App(ctk.CTk):
         self.edit_dd.add_option("Cut", command=self.cut)
 
         self.help_dd = CustomDropdownMenu(widget=self.help_menu)
-        self.help_dd.add_option("About")
+        self.help_dd.add_option("About", command=self.about)
 
         self.configure(menu=self.menu)
 
