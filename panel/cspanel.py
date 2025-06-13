@@ -42,7 +42,8 @@ class StartMenu(ctk.CTkToplevel):
     def app(self, idx):
         print(self.apps[idx])
         try:
-            subprocess.Popen(self.apps[idx].getExec().strip("%u%U%f%F%i%c%k").split(" "))
+            print(self.apps[idx].getExec().strip("%u%U%f%F%i%c%k").replace(" ", "#").split("#"))
+            subprocess.Popen(self.apps[idx].getExec().strip("%u%U%f%F%i%c%k").replace(" ", "#").split("#"))
             self.destroy()
         except Exception as e:
             messagebox.showerror("Error", e)
