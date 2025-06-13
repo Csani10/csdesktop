@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import customtkinter as ctk
 import tkinter as tk
 from xdg.DesktopEntry import DesktopEntry
@@ -8,7 +9,6 @@ from tkinter import messagebox
 import time
 import tomllib
 import re
-import darkdetect
 
 DASH_SPLIT_REGEX = re.compile(r'\s*[-–—]\s*')
 
