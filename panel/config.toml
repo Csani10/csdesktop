@@ -1,0 +1,17 @@
+[panel]
+position = "bottom"
+height = 30
+
+[[widgets]]
+type = "menu"
+text = "Menu"
+align = "left"
+
+[[widgets]]
+type = "tray"
+align = "left"
+
+[[widgets]]
+type = "clock"
+align = "right"
+format = "%H:%M:%S"
