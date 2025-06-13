@@ -39,6 +39,15 @@ class StartMenu(ctk.CTkToplevel):
         self.geometry(f"250x300+0+{self.winfo_screenheight() - 300 - config["panel"]["height"]}")
         self.setup_widgets()
     
+    def logout(self):
+        subprocess.call(["openbox", "--exit"])
+    
+    def reboot(self):
+        subprocess.call(["systemctl", "reboot"])
+    
+    def shutdown(self):
+        subprocess.call(["systemctl", "poweroff"])
+
     def app(self, idx):
         print(self.apps[idx])
         try:
@@ -74,6 +83,15 @@ class StartMenu(ctk.CTkToplevel):
         self.menu_view = ctk.CTkScrollableFrame(self.menu_tab)
         self.menu_view.pack(fill="both", expand=True)
         bind_mousewheel(self.menu_view)
+
+        self.logout_button = ctk.CTkButton(self.menu_view, text="Logout", command=self.logout)
+        self.logout_button.pack(fill="x", padx=2, pady=2)
+
+        self.reboot_button = ctk.CTkButton(self.menu_view, text="Reboot", command=self.reboot)
+        self.reboot_button.pack(fill="x", padx=2, pady=2)
+
+        self.shutdown_button = ctk.CTkButton(self.menu_view, text="Shutdown", command=self.shutdown)
+        self.shutdown_button.pack(fill="x", padx=2, pady=2)
 
         self.batch_add_apps()
         
