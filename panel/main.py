@@ -8,6 +8,7 @@ from tkinter import messagebox
 import time
 import tomllib
 import re
+import darkdetect
 
 DASH_SPLIT_REGEX = re.compile(r'\s*[-–—]\s*')
 
@@ -89,6 +90,8 @@ class Tray(ctk.CTkFrame):
     def __init__(self, master, width = 200, height = 200, corner_radius = None, border_width = None, bg_color = "transparent", fg_color = None, border_color = None, background_corner_colors = None, overwrite_preferred_drawing_method = None, **kwargs):
         super().__init__(master, width, height, corner_radius, border_width, bg_color, fg_color, border_color, background_corner_colors, overwrite_preferred_drawing_method, **kwargs)
 
+        ctk.set_appearance_mode(config["panel"]["theme"])
+    
         self.after(100, self.update_tray)
 
         self.windows = []
