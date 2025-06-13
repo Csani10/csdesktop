@@ -187,8 +187,8 @@ class App(ctk.CTk):
                 if not DesktopEntry(path).getHidden():
                     self.apps.append(DesktopEntry(path))
         
-        for desktop in os.listdir(os.getenv("HOME") + ".local/share/applications"):
-            path = Path.joinpath(Path(os.getenv("HOME") + ".local/share/applications"), desktop)
+        for desktop in os.listdir(os.getenv("HOME") + "/.local/share/applications"):
+            path = Path.joinpath(Path(os.getenv("HOME") + "/.local/share/applications"), desktop)
             if path.suffix == ".desktop":
                 if not DesktopEntry(path).getHidden():
                     if DesktopEntry(path) in self.apps:
