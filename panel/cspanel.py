@@ -49,7 +49,7 @@ class StartMenu(ctk.CTkToplevel):
                     continue
                 else:
                     exc.append(i)
-            subprocess.Popen(i)
+            subprocess.Popen(exc)
             self.destroy()
         except Exception as e:
             messagebox.showerror("Error", e)
