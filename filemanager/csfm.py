@@ -25,13 +25,6 @@ def bind_mousewheel(widget):
     widget.bind_all("<Button-5>", lambda e: widget._parent_canvas.yview_scroll(1, "units"))
 
 
-def svg_to_pil_image(svg_path, size=(22,22)):
-
-    png_bytes = cairosvg.svg2png(url=svg_path, output_width=size[0], output_height=size[1])
-
-    image = Image.open(io.BytesIO(png_bytes))
-    return image
-
 def get_sorted_entries(path):
     entries = os.listdir(path)
     return sorted(entries, key=lambda e: (
@@ -48,7 +41,7 @@ class App(ctk.CTk):
         self.title("CsFM")
         self.geometry("800x600")
 
-        self.path_var = ctk.StringVar(self, value="/home/csani")
+        self.path_var = ctk.StringVar(self, value=os.getenv("HOME"))
 
         self.setup_menu()
         self.setup_widgets()
@@ -103,22 +96,10 @@ class App(ctk.CTk):
         self.top_bar = ctk.CTkFrame(self, height=30)
         self.top_bar.pack(fill="x", side="top")  # no expand
 
-        up_icon = "./assets/up.svg"
-        up_icon_img = ctk.CTkImage(
-            dark_image=svg_to_pil_image(up_icon),
-            light_image=svg_to_pil_image(up_icon),
-            size=(22, 22)
-        )
-        self.dir_up_btn = ctk.CTkButton(self.top_bar, image=up_icon_img, text="", width=30, height=30, command=self.dirup)
+        self.dir_up_btn = ctk.CTkButton(self.top_bar, text="Up", width=30, height=30, command=self.dirup)
         self.dir_up_btn.pack(side="left")
 
-        home_icon = "./assets/folder-home.svg"
-        home_icon_img = ctk.CTkImage(
-            dark_image=svg_to_pil_image(home_icon),
-            light_image=svg_to_pil_image(home_icon),
-            size=(22, 22)
-        )
-        self.home_dir_btn = ctk.CTkButton(self.top_bar, image=home_icon_img, text="", width=30, height=30, command=self.home)
+        self.home_dir_btn = ctk.CTkButton(self.top_bar, text="Home", width=30, height=30, command=self.home)
         self.home_dir_btn.pack(side="left")
 
         self.path_edit = ctk.CTkEntry(self.top_bar, textvariable=self.path_var)
