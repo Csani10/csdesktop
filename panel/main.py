@@ -13,6 +13,7 @@ import re
 DASH_SPLIT_REGEX = re.compile(r'\s*[-–—]\s*')
 
 config = {}
+csdesktop_config = {}
 
 def bind_mousewheel(widget):
     def _on_mousewheel(event):
@@ -89,8 +90,6 @@ class Tray(ctk.CTkFrame):
 
     def __init__(self, master, width = 200, height = 200, corner_radius = None, border_width = None, bg_color = "transparent", fg_color = None, border_color = None, background_corner_colors = None, overwrite_preferred_drawing_method = None, **kwargs):
         super().__init__(master, width, height, corner_radius, border_width, bg_color, fg_color, border_color, background_corner_colors, overwrite_preferred_drawing_method, **kwargs)
-
-        ctk.set_appearance_mode(config["panel"]["theme"])
     
         self.after(100, self.update_tray)
 
@@ -141,6 +140,11 @@ class App(ctk.CTk):
     def __init__(self, fg_color = None, **kwargs):
         super().__init__(fg_color=fg_color, **kwargs)
     
+        if "theme" in config["panel"].keys():
+            ctk.set_appearance_mode(config["panel"]["theme"])
+        else:
+            ctk.set_appearance_mode(csdesktop_config["csdesktop"]["theme"])
+
         self.title("CsPanel")
         self.overrideredirect(True)
         self.geometry(f"{self.winfo_screenwidth()}x{config["panel"]["height"]}+0+{self.winfo_screenheight() - config["panel"]["height"]}")
@@ -187,7 +191,9 @@ class App(ctk.CTk):
 
 with open(os.getenv("HOME") + "/.config/csdesktop/panel.toml", "r") as f:
     config = tomllib.loads(f.read())
-    print(config)
+
+with open(os.getenv("HOME") + "/.config/csdesktop/config.toml", "r") as f:
+    csdesktop_config = tomllib.loads(f.read())
 
 app = App()
 app.mainloop()

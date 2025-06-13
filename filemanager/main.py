@@ -9,6 +9,9 @@ import io
 import os
 from pathlib import Path
 import subprocess
+import tomllib
+
+csdesktop_config = {}
 
 def bind_mousewheel(widget):
     def _on_mousewheel(event):
@@ -39,6 +42,8 @@ def get_sorted_entries(path):
 class App(ctk.CTk):
     def __init__(self, fg_color = None, **kwargs):
         super().__init__(fg_color, **kwargs)
+
+        ctk.set_appearance_mode(csdesktop_config["csdesktop"]["theme"])
 
         self.title("CsFM")
         self.geometry("800x600")
@@ -154,7 +159,8 @@ class App(ctk.CTk):
         self.help_dd = CustomDropdownMenu(self.help_menu)
         self.help_dd.add_option("About", command=self.about)
 
-
+with open(os.getenv("HOME") + "/.config/csdesktop/config.toml", "r") as f:
+    csdesktop_config = tomllib.loads(f.read())
 
 app = App()
 app.mainloop()

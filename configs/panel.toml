@@ -1,7 +1,6 @@
 [panel]
 position = "bottom"
 height = 30
-theme = "dark"
 
 [[widgets]]
 type = "menu"
