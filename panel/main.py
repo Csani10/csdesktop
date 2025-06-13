@@ -185,7 +185,7 @@ class App(ctk.CTk):
         
         self.apps = sorted(self.apps, key=lambda entry: entry.getName())
 
-with open("config.toml", "r") as f:
+with open(os.getenv("HOME") + "/.config/csdesktop/panel.toml", "r") as f:
     config = tomllib.loads(f.read())
     print(config)
 
