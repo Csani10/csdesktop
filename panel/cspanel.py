@@ -187,6 +187,14 @@ class App(ctk.CTk):
                 if not DesktopEntry(path).getHidden():
                     self.apps.append(DesktopEntry(path))
         
+        for desktop in os.listdir(os.getenv("HOME") + ".local/share/applications"):
+            path = Path.joinpath(Path(os.getenv("HOME") + ".local/share/applications"), desktop)
+            if path.suffix == ".desktop":
+                if not DesktopEntry(path).getHidden():
+                    if DesktopEntry(path) in self.apps:
+                        continue
+                    self.apps.append(DesktopEntry(path))
+        
         self.apps = sorted(self.apps, key=lambda entry: entry.getName())
 
 with open(os.getenv("HOME") + "/.config/csdesktop/panel.toml", "r") as f:
