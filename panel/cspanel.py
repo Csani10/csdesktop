@@ -208,8 +208,8 @@ class App(ctk.CTk):
                 tray = Tray(self)
                 tray.pack(fill="x", side=widget["align"])
             elif widget["type"] == "cmdbtn":
-                cmdbtn = ctk.CTkButton(self, text=widget["text"], command=lambda cmd=widget["command"]: self.cmd(cmd))
-                cmdbtn.pack(side=widget["align"])
+                cmdbtn = ctk.CTkButton(self, text=widget["text"], command=lambda cmd=widget["command"]: self.cmd(cmd), width=0)
+                cmdbtn.pack(side=widget["align"], padx=2, pady=2)
     
     def get_apps(self):
         for desktop in os.listdir("/usr/share/applications"):
