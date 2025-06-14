@@ -48,13 +48,16 @@ class StartMenu(ctk.CTkToplevel):
         self.setup_widgets()
     
     def logout(self):
-        subprocess.call(["openbox", "--exit"])
+        if messagebox.askyesno("Logout", "Are you sure you want to logout?"):
+            subprocess.call(["openbox", "--exit"])
     
     def reboot(self):
-        subprocess.call(["systemctl", "reboot"])
+        if messagebox.askyesno("Reboot", "Are you sure you want to reboot?"):
+            subprocess.call(["systemctl", "reboot"])
     
     def shutdown(self):
-        subprocess.call(["systemctl", "poweroff"])
+        if messagebox.askyesno("Shutdown", "Are you sure you want to shutdown?"):
+            subprocess.call(["systemctl", "poweroff"])
 
     def app(self, idx):
         log(self.apps[idx])
