@@ -119,15 +119,25 @@ class Tray(ctk.CTkFrame):
         self.after(100, self.update_tray)
 
         self.windows = []
+
+        self.buttons = []
     
     def switch_win(self, id):
         subprocess.Popen(["wmctrl", "-i", "-a", id])
+
+        for btn in self.buttons:
+            if btn["id"] == id:
+                btn["button"].configure(state="disabled")
+            else:
+                btn["button"].configure(state="normal")
 
     def update_tray(self):
         output = subprocess.check_output(["wmctrl", "-l"], text=True)
 
         windows = []
         pattern = re.compile(r'^(0x[0-9a-fA-F]+)\s+(\d+)\s+([^\s]+)\s+(.*)$')
+
+        self.active_win = subprocess.check_output(["xprop", "-root", "_NET_ACTIVE_WINDOW"], text=True)
 
         for line in output.strip().splitlines():
             match = pattern.match(line)
@@ -150,13 +160,25 @@ class Tray(ctk.CTkFrame):
             for child in self.winfo_children():
                 child.destroy()
 
+            self.buttons.clear()
+
             for window in windows:
                 print(window["title"], window["id"])
                 label = ctk.CTkButton(self, width=0, text=window["title"], command=lambda id=window["id"]: self.switch_win(id))
                 label.pack(side="left", padx=2, pady=5)
+                self.buttons.append({
+                    "button": label,
+                    "id": window["id"]
+                })
             
             self.windows = windows
         
+        for btn in self.buttons:
+            if btn["id"] == self.active_win[3]:
+                btn["button"].configure(state="disabled")
+            else:
+                btn["button"].configure(state="normal")
+
         self.after(100, self.update_tray)
 
 
