@@ -172,9 +172,10 @@ class Tray(ctk.CTkFrame):
                 })
             
             self.windows = windows
-        
+        print(self.active_win.strip("\n").split(" ")[4])
         for btn in self.buttons:
-            if btn["id"] == self.active_win[3]:
+            print(btn["id"])
+            if btn["id"] == "0x{:08x}".format(int(self.active_win.strip("\n").split(" ")[4], 16)):
                 btn["button"].configure(state="disabled")
             else:
                 btn["button"].configure(state="normal")
@@ -258,3 +259,8 @@ with open(os.getenv("HOME") + "/.config/csdesktop/config.toml", "r") as f:
 
 app = App()
 app.mainloop()
+
+
+
+
+
