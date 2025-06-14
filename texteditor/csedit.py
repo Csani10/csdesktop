@@ -23,6 +23,7 @@ class App(ctk.CTk):
         self.setup_widgets()
 
         self.file = file
+        self.read_file()
 
         self.filetypes = (
             ("Text files", "*.txt"),
