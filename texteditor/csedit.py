@@ -5,12 +5,13 @@ from tkinter import messagebox
 from CTkMenuBar import *
 import os
 import tomllib
+import sys
 
 csdesktop_config = {}
 
 class App(ctk.CTk):
 
-    def __init__(self, fg_color = None, **kwargs):
+    def __init__(self, file = "", fg_color = None, **kwargs):
         super().__init__(fg_color, **kwargs)
 
         ctk.set_appearance_mode(csdesktop_config["csdesktop"]["theme"])
@@ -21,20 +22,24 @@ class App(ctk.CTk):
         self.setup_menubar()
         self.setup_widgets()
 
-        self.file = ""
+        self.file = file
 
         self.filetypes = (
             ("Text files", "*.txt"),
             ("All files", "*.*")
         )
     
+    def read_file(self):
+        if self.file:
+            with open(self.file, "r") as f:
+                self.text_edit.delete("0.0", "end")
+                self.text_edit.insert("0.0", f.read())
+
     def open_file(self):
         file = ctk.filedialog.askopenfilename(defaultextension=".txt", filetypes=self.filetypes)
         if file:
-            with open(file, "r") as f:
-                self.text_edit.delete("0.0", "end")
-                self.text_edit.insert("0.0", f.read())
-                self.file = file
+            self.file = file
+            self.read_file()
     
     def save_file(self, new):
         if new:
@@ -126,5 +131,9 @@ class App(ctk.CTk):
 with open(os.getenv("HOME") + "/.config/csdesktop/config.toml", "r") as f:
     csdesktop_config = tomllib.loads(f.read())
 
-app = App()
+if len(sys.argv) > 1:
+    app = App(file=sys.argv[1])
+else:
+    app = App()
+
 app.mainloop()
