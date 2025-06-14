@@ -171,7 +171,7 @@ class Tray(ctk.CTkFrame):
             self.buttons.clear()
 
             for window in windows:
-                log(window["title"], window["id"])
+                log(window["title"] + " " + window["id"])
                 label = ctk.CTkButton(self, width=0, text=window["title"], command=lambda id=window["id"]: self.switch_win(id))
                 label.pack(side="left", padx=2, pady=5)
                 self.buttons.append({
