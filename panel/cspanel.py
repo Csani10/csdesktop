@@ -14,6 +14,12 @@ DASH_SPLIT_REGEX = re.compile(r'\s*[-–—]\s*')
 
 config = {}
 csdesktop_config = {}
+logsfile = open(os.getenv("HOME") + "/cspanel.log", "r")
+
+def log(log):
+    print(log)
+    logsfile.write(str(log) + "\n")
+    logsfile.flush()
 
 def bind_mousewheel(widget):
     def _on_mousewheel(event):
@@ -49,9 +55,9 @@ class StartMenu(ctk.CTkToplevel):
         subprocess.call(["systemctl", "poweroff"])
 
     def app(self, idx):
-        print(self.apps[idx])
+        log(self.apps[idx])
         try:
-            print(self.apps[idx].getExec().strip("%u%U%f%F%i%c%k").replace(" ", "#").split("#"))
+            log(self.apps[idx].getExec().strip("%u%U%f%F%i%c%k").replace(" ", "#").split("#"))
             exc = []
             for i in self.apps[idx].getExec().strip("%u%U%f%F%i%c%k").replace(" ", "#").split("#"):
                 if i == " " or i == "":
@@ -163,7 +169,7 @@ class Tray(ctk.CTkFrame):
             self.buttons.clear()
 
             for window in windows:
-                print(window["title"], window["id"])
+                log(window["title"], window["id"])
                 label = ctk.CTkButton(self, width=0, text=window["title"], command=lambda id=window["id"]: self.switch_win(id))
                 label.pack(side="left", padx=2, pady=5)
                 self.buttons.append({
@@ -172,9 +178,8 @@ class Tray(ctk.CTkFrame):
                 })
             
             self.windows = windows
-        print(self.active_win.strip("\n").split(" ")[4])
         for btn in self.buttons:
-            print(btn["id"])
+            log(btn["id"])
             if btn["id"] == "0x{:08x}".format(int(self.active_win.strip("\n").split(" ")[4], 16)):
                 btn["button"].configure(state="disabled")
             else:
@@ -220,7 +225,7 @@ class App(ctk.CTk):
     def setup_widgets(self):
         for widget in config["widgets"]:
             if widget["type"] == "menu":
-                print(widget)
+                log(widget)
                 menu = ctk.CTkButton(self, text=widget["text"], width=0, command=self.menu)
                 menu.pack(side=widget["align"], padx=2, pady=2)
             elif widget["type"] == "clock":
@@ -259,7 +264,7 @@ with open(os.getenv("HOME") + "/.config/csdesktop/config.toml", "r") as f:
 
 app = App()
 app.mainloop()
-
+logsfile.close()
 
 
 
