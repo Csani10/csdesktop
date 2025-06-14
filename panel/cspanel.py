@@ -191,6 +191,9 @@ class App(ctk.CTk):
         widget.configure(text = time.strftime(format))
         self.after(1000, lambda wg=widget, format=format: self.update_clock(wg, format))
 
+    def cmd(self, cmd):
+        subprocess.Popen(cmd.split(" "))
+
     def setup_widgets(self):
         for widget in config["widgets"]:
             if widget["type"] == "menu":
@@ -204,6 +207,9 @@ class App(ctk.CTk):
             elif widget["type"] == "tray":
                 tray = Tray(self)
                 tray.pack(fill="x", side=widget["align"])
+            elif widget["type"] == "cmdbtn":
+                cmdbtn = ctk.CTkButton(self, text=widget["text"], command=lambda: self.cmd(widget["command"]))
+                cmdbtn.pack(side=widget["align"])
     
     def get_apps(self):
         for desktop in os.listdir("/usr/share/applications"):
