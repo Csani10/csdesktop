@@ -14,7 +14,9 @@ DASH_SPLIT_REGEX = re.compile(r'\s*[-–—]\s*')
 
 config = {}
 csdesktop_config = {}
-logsfile = open(os.getenv("HOME") + "/cspanel.log", "r")
+logsfile = open(os.getenv("HOME") + "/cspanel.log", "w+")
+logsfile.truncate()
+logsfile.flush()
 
 def log(log):
     print(log)
