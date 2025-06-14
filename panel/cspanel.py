@@ -208,7 +208,7 @@ class App(ctk.CTk):
                 tray = Tray(self)
                 tray.pack(fill="x", side=widget["align"])
             elif widget["type"] == "cmdbtn":
-                cmdbtn = ctk.CTkButton(self, text=widget["text"], command=lambda: self.cmd(widget["command"]))
+                cmdbtn = ctk.CTkButton(self, text=widget["text"], command=lambda cmd=widget["command"]: self.cmd(cmd))
                 cmdbtn.pack(side=widget["align"])
     
     def get_apps(self):

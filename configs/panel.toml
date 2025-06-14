@@ -12,12 +12,12 @@ type = "tray"
 align = "left"
 
 [[widgets]]
+type = "clock"
+align = "right"
+format = "%H:%M:%S"
+
+[[widgets]]
 type = "cmdbtn"
 align = "right"
 command = "csvol"
 text = "Volume"
-
-[[widgets]]
-type = "clock"
-align = "right"
-format = "%H:%M:%S"
