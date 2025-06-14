@@ -1,2 +1,2 @@
 ### Csdesktop desktop envinroment
-App suite
+A simple desktop envinronment for openbox
