@@ -77,10 +77,21 @@ class App(ctk.CTk):
 
         pattern = re.compile(r'(\d+)\s+"([^"]+)"\s+"([^"]+)"\s+"([^"]+)"')
 
+        names = []
+        default_name = subprocess.check_output(["pactl", "get-default-sink"], text=True).strip()
+        
+        default = ""
+
         for line in output:
             matched = re.match(pattern, line)
 
             id_, name, state, friendly_name = matched.groups()
+
+            if name == default_name:
+                default = friendly_name
+
+            names.append(friendly_name)
+
             frame = ctk.CTkFrame(self.volume_list)
             frame.pack(fill="x", expand=True)
 
@@ -102,6 +113,8 @@ class App(ctk.CTk):
 
             self.volumes.append({
                 "id": id_,
+                "name": name,
+                "friendlyname": friendly_name,
                 "slider": slider,
                 "mutebox": mute_box,
                 "int": volume_int,
@@ -109,8 +122,18 @@ class App(ctk.CTk):
             })
         
         print(self.volumes)
+        self.main_vol_select.configure(require_redraw=False, values=names)
+        self.main_vol_select.set(default)
     
+    def volselect(self, val):
+        for vol in self.volumes:
+            if vol["friendlyname"] == val:
+                subprocess.call(["pactl", "set-default-sink", vol["name"]])
+
     def setup_widgets(self):
+        self.main_vol_select = ctk.CTkComboBox(self, command=self.volselect)
+        self.main_vol_select.pack()
+
         self.volume_list = ctk.CTkScrollableFrame(self)
         self.volume_list.pack(fill="both", expand=True)
 
